@@ -6,7 +6,7 @@ print("///////////////////////////////\n///////////////////////////////\n///////
 print(Back.WHITE,Fore.BLACK,"//!\\\\ THE UI OF THIS PYTHON PROGRAM HAS BEEN DEVELOP TO WORK ON MACOS, LINUX, OR GITBASH ON WINDOWS,")
 print("SO PLEASE DON'T TRY TO USE IT ON WINDOWS CMD OR POWERSHELL, EITHER YOU'RE GOING TO HAVE SOME ERROR MESSAGES")
 print("ALSO BE SURE TO HAVE THE COLORAMA PACKAGE FOR PYTHON INSTALLED ON YOUR COMPUTER")
-print("IF NOT, YOU NEED TO INSTALL IT BY WRITING THIS SMALL LINE ON YOUR CONSOLE \"-pip install colorama\"")
+print("IF NOT, YOU NEED TO INSTALL IT BY WRITING THIS SMALL LINE ON YOUR GITBASH CONSOLE \"-pip install colorama\" THIS LINE WON'T WORK ON MAC, TRY THIS \" pip3 install colorama\"") 
 print("THANK YOU, and ENJOY")
 print("But watchout, the narrator may be a bit... arrogant.",Back.RESET,Fore.RESET)
 print("///////////////////////////////\n///////////////////////////////\n///////////////////////////////\n///////////////////////////////\n\n")
