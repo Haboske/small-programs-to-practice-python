@@ -1,6 +1,36 @@
 #We import all the necessary packages
 import random
+import inquirer
 from colorama import Fore, Back, Style
+
+def Play(playerChoice,computerChoice,score):
+    print("Hi....\nFu....\nMi !")
+    #we compare the choice between the player and the AI
+    if playerChoice == computerChoice:
+        print(Back.WHITE,Fore.BLACK,"IT'S A DRAW, YOU BOTH PICK THE SAME CHOICE, RETRY",Fore.BLUE,Back.RESET)
+    #elif allow us to make multiple comparison
+    elif playerChoice == "Hi" and computerChoice == "Mi" \
+    or playerChoice == "Fu" and computerChoice == "Hi" \
+    or playerChoice == "Mi" and computerChoice == "Fu":
+        #if the player won we give him 1 point
+        print(Fore.GREEN + "YOU WON THIS ROUND ! your choice was '", str(playerChoice), "' and the ai choice was '", computerChoice, "'",Fore.RESET)
+        score[0] += 1;
+    else:
+        #if the ai won we give him 1 point
+        print(Fore.RED + "YOU LOST THIS ROUND ! your choice was '", str(playerChoice), "' and the ai choice was '", computerChoice, "'",Fore.RESET)
+        score[1] += 1;
+        
+    return score;
+        
+def DisplayScore(score):
+    #We announce to the player who won the match
+    if score[0] > score[1]:
+        print(Back.GREEN ,"YOU THE BEAST, YOU WON THIS MATCH AND BY FAR !", Back.RESET)
+    elif score[0] == score[1]:
+        print(Back.YELLOW ,"YOU BOTH NOOB, NONE OF YOU ARE EVEN ABLE TO WON AT A HI FU MI GAME WTF", Back.RESET)
+    else:
+        print(Back.RED ,"WHAT A SHAME, YOU LOST TO A COMPUTER !", Back.RESET)
+    
 
 print("///////////////////////////////\n///////////////////////////////\n///////////////////////////////\n///////////////////////////////")
 print(Back.WHITE,Fore.BLACK,"//!\\\\ THE UI OF THIS PYTHON PROGRAM HAS BEEN DEVELOP TO WORK ON MACOS, LINUX, OR GITBASH ON WINDOWS,")
@@ -21,62 +51,37 @@ while True:
         #if there is a ValueError, like writting a chain character instead of a number, I warn the player that he needs to put only a number.
         print(Fore.YELLOW,"\nHey hey hey, I asked you to put a number, not a word or a sentence. How do you want me to understand that you want to play 35 round if you indicate me 'THIRTY FIVE' as a string ! \nPlease, retry (but this time with a number) :)",Fore.WHITE)
 
+#we set the default score for the player and the score to 0
+score: list = [0,0]
+i:int  = 0
 
-#we ask the player how much round they want to play
-#round = int(input("Hi ! Welcome to the Hi, Fu, Mi ! Game. \nHow many round do you want to play ? "))
-#print("please make an effort : ", round)
+#we set the three different options that the player and the computer are willing to choose
+ai_options = ["Hi", "Fu", "Mi"]
 
-#we set the default score for the player and the ai to 0
-player_score = 0
-ai_score = 0
-i = 0
+options = [inquirer.List
+            ('choice',
+                message="What do you play ?",
+                choices=ai_options,
+            ),
+]
 
-#we set the three different options that the player and the ai are willing to choose
-options = ["hi", "fu", "mi"]
-
+#I create an other array for the computer choice because we can't randomly select an value in an inquirer list
 
 #while the sum of player_score + ai_score is under the number of round the player want to play the loop doesn't stop
-#I could have used an iterator like i and write "while i < round : player_choice... i += 1", both work in this situation
 while i < round:
 
     #simple UI that indicate to the player which round he is playing and the score of both opponents
     print(Fore.YELLOW , "\n \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\", Fore.RESET, Back.YELLOW,"           ",Back.RESET )
-    print(Fore.YELLOW ,"Round : ", int(i+1), Fore.GREEN ,"  Your score = ", player_score , Fore.RED ," AI score = ", ai_score , Fore.BLUE)
+    print(Fore.YELLOW ,"Round : ", int(i+1), Fore.GREEN ,"  Your score = ", str(score[0]) , Fore.RED ," AI score = ", str(score[1]) , Fore.BLUE)
     print(Fore.YELLOW , Back.YELLOW, "           " , Back.RESET , "/////////////////////////////////\n" , Back.RESET , Fore.RESET,)
     
-    #we ask the player which choice he want to play
-    player_choice = input("What are you playing ? Hi, Fu or Mi ?\nSmall reminder : hi>mi, fu>hi, mi>fu\nYour choice : ")
+    score = Play(inquirer.prompt(options)['choice'],random.choice(ai_options),score);
+    i += 1;
     
-    #we redirect the player everytime he choose an unknow option
-    while player_choice not in options:
-        player_choice = input("Wrong choice ! You choose, Hi, Fu or Mi ! (without the quotation marks of course)")
-
-    print("Hi....\nFu....\nMi !")
+DisplayScore(score);
     
-    #we select a random choixe available in the table we created named "options"
-    ai_choice = random.choice(options)
 
-    #we compare the choice between the player and the AI
-    if player_choice == ai_choice:
-        print(Back.WHITE,Fore.BLACK,"IT'S A DRAW, YOU BOTH PICK THE SAME CHOICE, RETRY",Fore.BLUE,Back.RESET)
-    #elif allow us to make multiple comparison
-    elif player_choice == "hi" and ai_choice == "mi" \
-    or player_choice == "fu" and ai_choice == "hi" \
-    or player_choice == "mi" and ai_choice == "fu":
-        #if the player won we give him 1 point
-        print(Fore.GREEN + "YOU WON THIS ROUND ! your choice was '", str(player_choice), "' and the ai choice was '", ai_choice, "'",Fore.RESET)
-        player_score += 1
-        i += 1
-    else:
-        #if the ai won we give him 1 point
-        print(Fore.RED + "YOU LOST THIS ROUND ! your choice was '", str(player_choice), "' and the ai choice was '", ai_choice, "'",Fore.RESET)
-        ai_score += 1
-        i += 1
 
-#We announce to the player who won the match
-if player_score > ai_score:
-    print(Back.GREEN ,"YOU THE BEAST, YOU WON THIS MATCH AND BY FAR !", Back.RESET)
-elif player_score == ai_choice:
-    print(Back.YELLOW ,"YOU BOTH NOOB, NONE OF YOU ARE EVEN ABLE TO WON AT A HI FU MI GAME WTF", Back.RESET)
-else:
-    print(Back.RED ,"WHAT A SHAME, YOU LOST TO A COMPUTER !", Back.RESET)
+    
+
+

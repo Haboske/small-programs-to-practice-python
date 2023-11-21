@@ -1,41 +1,111 @@
 import random
 
-# Generating the random number between 1 and 10000
-price = random.randint(1,10000)
+# Creating a function that check every character and verify if it is a unsigned integer character 'between 1 to 9'
+def CheckUnsignedInt(string: str):
+    for character in string:
+        if not character.isnumeric():
+            return False
+    return True;
 
-# tries is no more than an iterator
-tries = 0
+# Creating a function that is going to ask the player to enter an Unsigned Integer Number
+def AskUnsignedInt(): 
+    
+    stringInput: str = (input('Please enter a number : '));
+    
+    # And we call the function created just above to check if the input value is only made of unsigned integer characters
+    while not CheckUnsignedInt(stringInput):
+        stringInput: str = (input('I said enter a number ! Nothing else : '));
+    
+    return int(stringInput);
 
-# announcing to the player that he is playing "the right price"
-print("Try to guess the right number in between 1 and 10000, the more you try, the more points you will loose")
 
-# generating a boolean loop that ask the player to enter a number until he finds the right one
-while True:
-    #number is the variable that we are going to compare with the right price, and the function input ask the player to write the number in the console
-    number = int(input())
-    #we add 1 everytime the player is trying to guess the right number to further calculate his score
-    tries += 1
+# Creating a function that ask the player to choose range limit of the right price
+def AskGameLimit(limitAsked: str):
+
+    print("I'll need you to choose the "+limitAsked+" value of the right price.")
+    
+    limitValue: str = AskUnsignedInt();
+        
+    return int(limitValue);
+
+# Creating a function that compare the player choice with the priced defined randomly before the player start the game
+def CheckPlayerChoice(playerChoice,price,tries):
+
     #if the number the player entered is less the price
-    if number < price:
-        #calculate the difference to check if the player is far away from the good price or not
-        difference = price - number
-        #if far away we announce it
-        if difference >= 100:
-            print("lot more")
-        if difference < 100:
-            print("more")
-    if number > price:
-        difference = number - price
-        if difference >= 100:
-            print("lot less")
-        if difference < 100:
-            print("less")
-    #if the player find the right price
-    if number == price:
-        #we display to the player his score after his win.
-        print("the right price ! your score is " +str(int(100)-tries))
-        #we stop the loop
-        break
+    if playerChoice < price:
 
-#announcing that the party is over
-print("party over")
+        #calculate the difference to check if the player is far away from the good price or not
+        difference = price - playerChoice;
+        if difference >= 10:
+            print("lot more");
+            return True;
+        if difference < 10:
+            print("more");
+            return True;
+
+    # Same tha above but if more than the price
+    if playerChoice > price:
+
+        difference = playerChoice - price
+        if difference >= 10:
+            print("lot less");
+            return True; 
+        if difference < 10:
+            print("less");
+            return True;
+
+    # If the player found the right price   
+    if playerChoice == price:
+        print("You found the right price !");
+        print("Your score is "+str(10-tries)+"/10 !");
+        return False;
+    
+# Creating a function that is called at the end of the game when the player found the right price.
+def EndGame():
+
+    # Asking the user if he still wants to play or not
+    answer: str =  input("Do you want to retry the party ? Yes or No : ");
+
+    # We return True or False because the function if called to assign a value to a bool variable that is used for a loop. Depending on the answer the loop of the game will stop.
+    while True:
+            if(answer == "No"):
+                print("Ok, bye");
+                return False;
+            elif(answer == "Yes"):
+                print("Ok, let's restart then");
+                return True;
+            else:
+                print('We asked you "Yes or No" not "'+answer+'"');
+                answer = input('So... do you want to retry "Yes" or "No" ? ');
+    
+Game: bool = True;
+while Game:
+      
+    # Generating the random number in the range that the player choosed
+    while True:
+        try:
+            price: int = random.randint(AskGameLimit("minimum"),AskGameLimit("maximum"));
+            print("Perfect ! Now, let's try to guess the right price");
+            break;
+        except: 
+            print('Hey, the first value must be the lowest one and the second the biggest. Thanks');
+
+    #Tries is an iterator that help us to calculate the score and stop the game if it exceeds 10
+    tries: int = 0;
+    playing: bool = True;
+
+    #while playing is a loop that doesn't stop until the player hasn't found the Right Price
+    while playing:
+        
+        #We ask the player to enter a number, then compare it with the defined price
+        playerChoice:int = AskUnsignedInt();
+        playing = CheckPlayerChoice(playerChoice,price,tries);
+
+        tries += 1;
+        if(tries >= 10):
+            print("You loose !")
+            break;
+    
+    # Calling the function that check if the player still want to play or not
+    Game = EndGame();
+    
