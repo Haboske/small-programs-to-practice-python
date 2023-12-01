@@ -1,30 +1,12 @@
 import random
-
-# Creating a function that check every character and verify if it is a unsigned integer character 'between 1 to 9'
-def CheckUnsignedInt(string: str):
-    for character in string:
-        if not character.isnumeric():
-            return False
-    return True;
-
-# Creating a function that is going to ask the player to enter an Unsigned Integer Number
-def AskUnsignedInt(): 
-    
-    stringInput: str = (input('Please enter a number : '));
-    
-    # And we call the function created just above to check if the input value is only made of unsigned integer characters
-    while not CheckUnsignedInt(stringInput):
-        stringInput: str = (input('I said enter a number ! Nothing else : '));
-    
-    return int(stringInput);
-
+import tools
 
 # Creating a function that ask the player to choose range limit of the right price
 def AskGameLimit(limitAsked: str):
 
     print("I'll need you to choose the "+limitAsked+" value of the right price.")
     
-    limitValue: str = AskUnsignedInt();
+    limitValue: str = tools.AskUnsignedInt();
         
     return int(limitValue);
 
@@ -98,7 +80,7 @@ while Game:
     while playing:
         
         #We ask the player to enter a number, then compare it with the defined price
-        playerChoice:int = AskUnsignedInt();
+        playerChoice:int = tools.AskUnsignedInt();
         playing = CheckPlayerChoice(playerChoice,price,tries);
 
         tries += 1;
